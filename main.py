@@ -10,6 +10,17 @@ from fastapi import HTTPException
 
 api = FastAPI()
 
+from fastapi.middleware.cors import CORSMiddleware
+
+origins = [
+    "http://localhost.tiangolo.com", "https://localhost.tiangolo.com",
+    "http://localhost", "http://localhost:8080",
+    ]
+api.add_middleware(
+    CORSMiddleware, allow_origins=origins,
+    allow_credentials=True, allow_methods=["*"], allow_headers=["*"],
+)
+
 @api.post("/user/auth/")
 async def auth_user(user_in: UserIn):
     user_in_db = get_user(user_in.username)
@@ -40,3 +51,11 @@ async def make_transaction(transaction_in: TransactionIn):
     transaction_in_db = save_transaction(transaction_in_db)
     transaction_out = TransactionOut(**transaction_in_db.dict())
     return transaction_out
+
+@api.get("/user/updatepass/{username}")
+async def get_balance(username: str):
+    user_in_db = get_user(username)
+    if user_in_db == None:
+        raise HTTPException(status_code=404,detail="El usuario no existe")
+    user_out = UserOut(**user_in_db.dict())
+    return user_out
