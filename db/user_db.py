@@ -12,7 +12,10 @@ database_users = {"camilo24": UserInDB(**{"username":"camilo24",
                 "balance":12000}),
                 "andres18": UserInDB(**{"username":"andres18",
                 "password":"hola",
-                "balance":34000}),}
+                "balance":34000}),
+                "diego": UserInDB(**{"username":"diego",
+                "password":"hola",
+                "balance":30000000})}
 def get_user(username: str):
     if username in database_users.keys():
         return database_users[username]
